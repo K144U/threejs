@@ -1,1 +1,1 @@
-console.log("three.js")
+console.log(THREE)
