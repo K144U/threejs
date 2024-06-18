@@ -1,5 +1,9 @@
+import './style.css'
 import * as THREE from 'three'
-import { damp } from 'three/src/math/MathUtils.js'
+import gsap from 'gsap'
+
+console.log (gsap)
+
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -11,6 +15,7 @@ const scene = new THREE.Scene()
 const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 const mesh = new THREE.Mesh(geometry, material)
+mesh.position.set(0,0,0)
 scene.add(mesh)
 
 // Sizes
@@ -37,6 +42,13 @@ const clock = new THREE.Clock()
 
 let time = Date.now ()
 
+
+//gsap
+// gsap.to(mesh.position,{duration :1, delay: 1 , y:-1})
+// gsap.to(mesh.position,{duration :1, delay: 2, x:-2})
+// gsap.to(mesh.position,{duration :1, delay: 3 , y:1})
+// gsap.to(mesh.position,{duration :1, delay: 4, x:2})
+
 //animation
 
 const loop = () =>
@@ -52,7 +64,7 @@ const loop = () =>
         mesh.rotation.y = elapsedtime
         mesh.position.y = Math.sin(elapsedtime)
 
-        camera.lookAt(mesh.position)
+        // camera.lookAt(mesh.position)
 
         // mesh.rotation.x += 0.001 * deltaTime
         // mesh.rotation.y += 0.001 * deltaTime
