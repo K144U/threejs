@@ -40,8 +40,8 @@ matcapTexture.colorSpace = THREE.SRGBColorSpace
 /**
  * Objects
  */
-MeshBasicMaterial
-const material = new THREE.MeshBasicMaterial({map : doorColorTexture})
+// MeshBasicMaterial
+// const material = new THREE.MeshBasicMaterial({map : doorColorTexture})
 
 const material = new THREE.MeshBasicMaterial()
 material.map = doorColorTexture
