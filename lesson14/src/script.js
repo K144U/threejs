@@ -50,7 +50,8 @@ particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 
 const particlesMaterial = new THREE.PointsMaterial()
     particlesMaterial.size = 0.1
     particlesMaterial.sizeAttenuation = true
-    particlesMaterial.map = particleTexture
+    particlesMaterial.alphaMap = particleTexture
+    particlesMaterial.transparent = true
     particlesMaterial.color = new THREE.Color('pink')
 
 
