@@ -1,6 +1,10 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { GLTFLoader } from 'three/examples/jsm/Addons.js'
 import GUI from 'lil-gui'
+
+
+
 
 /**
  * Base
@@ -13,6 +17,46 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+
+
+
+//models
+const gltfLoader = new GLTFLoader()
+// gltfLoader.load(
+//     '/models/Duck/glTF/Duck.gltf',
+//     (gltf) =>
+//     {
+//        scene.add(gltf.scene.children[0])
+//     }
+// )
+
+// gltfLoader.load(
+//     '/models/FlightHelmet/glTF/FlightHelmet.gltf',
+//     (gltf) => {
+//         const children = [...gltf.scene.children]
+//         for (const child of children)
+//             {
+//                 scene.add(child)
+//             }
+
+//     }
+// )
+let Mixer = null
+
+gltfLoader.load(
+    '/models/Fox/glTF/Fox.gltf',
+    (gltf) => 
+    {
+        Mixer = new THREE.AnimationMixer(gltf.scene) 
+        const action = Mixer.clipAction(gltf.animations[2])
+        action.play()
+
+        gltf.scene.scale.set(0.025,0.025,0.025)
+        scene.add(gltf.scene)
+    }
+)
+
+
 
 /**
  * Floor
@@ -105,6 +149,9 @@ const tick = () =>
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
+
+    if (Mixer!== null){
+    Mixer.update(deltaTime)}
     // Update controls
     controls.update()
 
