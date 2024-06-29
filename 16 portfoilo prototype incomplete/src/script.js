@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 import GUI from 'lil-gui'
+import { mx_bits_to_01 } from 'three/examples/jsm/nodes/materialx/lib/mx_noise.js'
+import { ThreeMFLoader } from 'three/examples/jsm/Addons.js'
 
 /**
  * Debug
@@ -42,38 +44,87 @@ const mesh1 = new THREE.Mesh(
 
 )
 
-
-
 const mesh2 = new THREE.Mesh(
     new THREE.ConeGeometry(1, 2, 32),
     material
 )
 
 
-
-
-
-
-
 const mesh3 = new THREE.Mesh(
     new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
     material
 )
+
+const mesh4 = new THREE.Mesh(
+    new THREE.BoxGeometry(1,1,1),
+    material
+)
+
+const mesh5 = new THREE.Mesh(
+    new THREE.DodecahedronGeometry(1),
+    material
+)
+
+const mesh6 = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1),
+    material
+)
+
+
+
+
+
+
+
+
+
+
 mesh1.position.y = - objectsDistance *0
 mesh2.position.y = - objectsDistance *1
 mesh3.position.y = - objectsDistance *2
+mesh4.position.y = - objectsDistance *3
+mesh5.position.y = - objectsDistance *4
+mesh6.position.y = - objectsDistance *5
+
+
 
 mesh1.position.x = 2
 mesh2.position.x = - 2
 mesh3.position.x = 2
+mesh4.position.x = -2
+mesh5.position.x = 2
+mesh6.position.x = -2
+
+scene.add(mesh1, mesh2, mesh3, mesh4, mesh5,mesh6)
+
+
+const sectionMeshes = [mesh1,mesh2,mesh3, mesh4,mesh5,mesh6]
 
 
 
-scene.add(mesh1, mesh2, mesh3)
+
+//particles 
+const particlesCount = 800
+const positions = new Float32Array(particlesCount * 3)
+
+for (let i = 0; i <  particlesCount ; i++){
+positions[i * 3 + 0] = (Math.random() -0.5)* 10
+positions[i * 3 + 1] = objectsDistance * 0.5 - Math.random()* objectsDistance * sectionMeshes.length
+positions[i * 3 + 2] = (Math.random() -0.5)*10
+}
+
+const particlegeometry = new THREE.BufferGeometry()
+particlegeometry.setAttribute('position',new THREE.BufferAttribute(positions , 3))
 
 
-const sectionMeshes = [mesh1,mesh2,mesh3]
+const particlesmaterial =new THREE.PointsMaterial({
+    color : parameters.materialColor,
+    sizeAttenuation: true ,
+    size : 0.03
+})
 
+const patricles = new THREE.Points(particlegeometry, particlesmaterial)
+scene.add(patricles)
 
 
 
@@ -104,10 +155,15 @@ window.addEventListener('resize', () =>
 /**
  * Camera
  */
+
+const cameraGroup = new THREE.Group
+scene.add(cameraGroup)
+
+
 // Base camera
 const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 100)
 camera.position.z = 6
-scene.add(camera)
+cameraGroup.add(camera)
 
 // Material
 
@@ -140,11 +196,23 @@ window.addEventListener('scroll', () =>
 
 
 
+    const cursor = {}
+    cursor.x = 0 
+    cursor.y = 0 
+
+    window.addEventListener('mousemove', (event) =>
+        {
+            cursor.x = event.clientX / sizes.width -0.5
+            cursor.y = event.clientY / sizes.height -0.5
+        })
+
+
+
 /**
  * Animate
  */
 const clock = new THREE.Clock()
-
+let previousTime  = 0 
 
 
 
@@ -152,10 +220,21 @@ const clock = new THREE.Clock()
 
 const tick = () =>
 {
+
+
         const elapsedTime = clock.getElapsedTime()
+        const deltaTime = elapsedTime - previousTime
+        previousTime = elapsedTime
+
+
 
         camera.position.y = - scrollY / sizes.height * objectsDistance
 
+
+        const parallaxX = cursor.x *0.5
+        const parallaxY = - cursor.y *0.5
+        cameraGroup.position.x += (parallaxX - cameraGroup.position.x)*0.05
+        cameraGroup.position.y += (parallaxY - cameraGroup.position.y)*0.05
 
         // Animate meshes
         for(const mesh of sectionMeshes)

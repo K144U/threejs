@@ -36,9 +36,37 @@ background-color: black;
     color: #ffeded;
     text-transform: uppercase;
     font-size: 7vmin;
-    padding-left: 10%;
-    padding-right: 10%;
+    padding-left: 7%;
+    padding-right: 7%
 }
+
+
+.sectionmain
+{
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    font-family: 'Cabin', sans-serif;
+    color: #ffeded;
+    text-transform: uppercase;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.shapesbyme
+{
+    font-size: 15vh;
+    text-align: center;
+}
+
+.madebyme
+{
+    font-size: 5vh;
+    text-align: center;
+}
+
+
 
 section:nth-child(odd)
 {
