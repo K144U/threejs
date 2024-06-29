@@ -10,6 +10,11 @@ const parameters = {
     materialColor: '#ffeded'
 }
 
+// Texture
+const textureLoader = new THREE.TextureLoader()
+const gradientTexture = textureLoader.load('textures/gradients/3.jpg')
+gradientTexture.magFilter = THREE.NearestFilter
+
 
 /**
  * Base
@@ -20,14 +25,58 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-/**
- * Test cube
- */
-const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: '#ff0000' })
+
+const material = new THREE.MeshToonMaterial({
+    color: parameters.materialColor,
+    gradientMap: gradientTexture
+})
+
+
+const objectsDistance = 4
+
+
+// Meshes
+const mesh1 = new THREE.Mesh(
+    new THREE.TorusGeometry(1, 0.4, 16, 60),
+    material
+
 )
-scene.add(cube)
+
+
+
+const mesh2 = new THREE.Mesh(
+    new THREE.ConeGeometry(1, 2, 32),
+    material
+)
+
+
+
+
+
+
+
+const mesh3 = new THREE.Mesh(
+    new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
+    material
+)
+mesh1.position.y = - objectsDistance *0
+mesh2.position.y = - objectsDistance *1
+mesh3.position.y = - objectsDistance *2
+
+mesh1.position.x = 2
+mesh2.position.x = - 2
+mesh3.position.x = 2
+
+
+
+scene.add(mesh1, mesh2, mesh3)
+
+
+const sectionMeshes = [mesh1,mesh2,mesh3]
+
+
+
+
 
 /**
  * Sizes
@@ -60,6 +109,16 @@ const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 
 camera.position.z = 6
 scene.add(camera)
 
+// Material
+
+
+//lights 
+const directionalLight = new THREE.DirectionalLight('#ffffff', 3)
+directionalLight.position.set(1, 1, 0)
+scene.add(directionalLight)
+
+
+
 /**
  * Renderer
  */
@@ -70,14 +129,41 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+
+let scrollY = window.scrollY
+window.addEventListener('scroll', () =>
+    {
+        scrollY = window.scrollY
+    
+        console.log(scrollY)
+    })
+
+
+
 /**
  * Animate
  */
 const clock = new THREE.Clock()
 
+
+
+
+
+
 const tick = () =>
 {
-    const elapsedTime = clock.getElapsedTime()
+        const elapsedTime = clock.getElapsedTime()
+
+        camera.position.y = - scrollY / sizes.height * objectsDistance
+
+
+        // Animate meshes
+        for(const mesh of sectionMeshes)
+        {
+            mesh.rotation.x = elapsedTime * 0.1
+            mesh.rotation.y = elapsedTime * 0.12
+        }
+    
 
     // Render
     renderer.render(scene, camera)
