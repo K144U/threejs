@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import GUI from 'lil-gui';
+
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 
@@ -20,39 +20,26 @@ const scene = new THREE.Scene();
 
 
 
-
-
-// Models data
-const models = [
-    { name: 'yoru', path: '/models/yoru.glb', scale: 50, position: new THREE.Vector3(1.6, -1, 1) },
-    // { name: 'jett', path: '/models/jett.glb', scale: 70, position: new THREE.Vector3(1, -2, -1) },
-    // { name: 'sage', path: '/models/sage.glb', scale: 70, position: new THREE.Vector3(1, 1, -1) }
-];
-
-// Loaded models object
-const loadedModels = {};
-
-// Load all models
-models.forEach(modelData => {
-    gltfLoader.load(
-        modelData.path,
-        (gltf) => {
-            const model = gltf.scene;
-            model.scale.set(modelData.scale, modelData.scale, modelData.scale);
-            model.position.copy(modelData.position);
-            scene.add(model);
-            loadedModels[modelData.name] = model;
-        }
-    );
-});
+const loader = new GLTFLoader()
+loader.load(
+    '/models/jett.glb',
+    (gltf) => {
+        gltf.scene.scale.set(50,50,50)
+        gltf.scene.position.set(1,-1,1)
+        scene.add(gltf.scene)
+    }
+)
 
 
 
-
-
-
-
-
+// loader.load(
+//     '/models/killjoy.glb',
+//     (gltf) =>
+//     {
+//         gltf.scene.rotation.set(0,Math.PI*0.3,0)
+//         scene.add(gltf.scene)
+//     }
+// )
 
 
 // Sizes
@@ -97,13 +84,6 @@ const clock = new THREE.Clock();
 
 const animate = () => {
     const elapsedTime = clock.getElapsedTime();
-
-    // Rotate Yoru model
-    const yoruModel = loadedModels['yoru'];
-    if (yoruModel) {
-        yoruModel.rotation.y =  elapsedTime * 0.2; // Adjust rotation speed as needed
-        yoruModel.position.y = ( Math.sin(elapsedTime)*0.2)
-    }
 
     // Render scene
     renderer.render(scene, camera);
