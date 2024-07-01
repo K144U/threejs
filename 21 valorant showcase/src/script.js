@@ -2,12 +2,7 @@ import * as THREE from 'three';
 import GUI from 'lil-gui';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-// Debug
-const gui = new GUI();
-const parameters = {
-    materialColor: '#ffeded'
-};
-gui.addColor(parameters, 'materialColor');
+
 
 // Loader
 const gltfLoader = new GLTFLoader();
@@ -29,9 +24,9 @@ const scene = new THREE.Scene();
 
 // Models data
 const models = [
-    { name: 'yoru', path: '/models/yoru.glb', scale: 70, position: new THREE.Vector3(-1, -1, -1) },
-    { name: 'jett', path: '/models/jett.glb', scale: 70, position: new THREE.Vector3(1, -2, -1) },
-    { name: 'sage', path: '/models/sage.glb', scale: 70, position: new THREE.Vector3(1, 1, -1) }
+    { name: 'yoru', path: '/models/yoru.glb', scale: 70, position: new THREE.Vector3(1.6, -1.35, 1) },
+    // { name: 'jett', path: '/models/jett.glb', scale: 70, position: new THREE.Vector3(1, -2, -1) },
+    // { name: 'sage', path: '/models/sage.glb', scale: 70, position: new THREE.Vector3(1, 1, -1) }
 ];
 
 // Loaded models object
@@ -107,7 +102,7 @@ const animate = () => {
     const yoruModel = loadedModels['yoru'];
     if (yoruModel) {
         yoruModel.rotation.y =  elapsedTime * 0.2; // Adjust rotation speed as needed
-        
+        // yoruModel.position.y = ( Math.sin(elapsedTime)-0.5)
     }
 
     // Render scene
