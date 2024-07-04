@@ -85,6 +85,26 @@ scene.background = environmentMap
 
 
 
+const holydonut = new THREE.Mesh(
+    new THREE.TorusGeometry(8, 0.5),
+    new THREE.MeshBasicMaterial({ color: new THREE.Color(10, 4, 2) })
+)
+holydonut.layers.enable(1)
+holydonut.position.y = 3.5
+scene.add(holydonut)
+
+const cuberendertarget = new THREE.WebGLCubeRenderTarget(
+    256,
+    {
+        type: THREE.FloatType
+    }
+)
+
+scene.environment = cuberendertarget.texture
+
+const cubeCamera = new THREE.CubeCamera(0.1, 100, cuberendertarget)
+cubeCamera.layers.set(1)
+
 
 
 /**
@@ -94,7 +114,7 @@ const torusKnot = new THREE.Mesh(
     new THREE.TorusKnotGeometry(1, 0.4, 100, 16),
 
     new THREE.MeshStandardMaterial({
-        roughness: 0.3,
+        roughness: 0,
         metalness : 1,
         color: 0xaaaaaa
     })
@@ -178,6 +198,15 @@ const tick = () =>
 {
     // Time
     const elapsedTime = clock.getElapsedTime()
+
+
+    if(holydonut)
+    {
+        holydonut.rotation.x = Math.sin(elapsedTime)*2
+
+
+        cubeCamera.update(renderer , scene)
+}
 
     // Update controls
     controls.update()
