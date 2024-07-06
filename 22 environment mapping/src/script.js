@@ -87,7 +87,7 @@ scene.background = environmentMap
 
 const holydonut = new THREE.Mesh(
     new THREE.TorusGeometry(8, 0.5),
-    new THREE.MeshBasicMaterial({ color: new THREE.Color(10, 4, 2) })
+    new THREE.MeshBasicMaterial({ color: new THREE.Color(20, 4, 2) })
 )
 holydonut.layers.enable(1)
 holydonut.position.y = 3.5
