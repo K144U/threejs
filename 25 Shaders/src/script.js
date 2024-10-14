@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
+import { ThreeMFLoader } from 'three/examples/jsm/Addons.js'
 
 /**
  * Base
@@ -25,12 +26,17 @@ const textureLoader = new THREE.TextureLoader()
 // Geometry
 const geometry = new THREE.PlaneGeometry(1, 1, 32, 32)
 
-// Material
-const material = new THREE.MeshBasicMaterial()
+//raw shader material 
+const material = new THREE.RawShaderMaterial({
+    vertexShader:``,
+    fragmentShader: ``
+})
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
+
+
 
 /**
  * Sizes
