@@ -2,6 +2,9 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
 import { ThreeMFLoader } from 'three/examples/jsm/Addons.js'
+import testVertexShader from './shaders/test/vertex.glsl'
+import testFragmentShader from './shaders/test/fragment.glsl'
+
 
 /**
  * Base
@@ -28,8 +31,8 @@ const geometry = new THREE.PlaneGeometry(1, 1, 32, 32)
 
 //raw shader material 
 const material = new THREE.RawShaderMaterial({
-    vertexShader:``,
-    fragmentShader: ``
+    vertexShader: testVertexShader,
+    fragmentShader: testFragmentShader
 })
 
 // Mesh
