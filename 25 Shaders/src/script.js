@@ -4,6 +4,7 @@ import GUI from 'lil-gui'
 import { ThreeMFLoader } from 'three/examples/jsm/Addons.js'
 import testVertexShader from './shaders/test/vertex.glsl'
 import testFragmentShader from './shaders/test/fragment.glsl'
+import { uniforms } from 'three/examples/jsm/nodes/Nodes.js'
 
 
 /**
@@ -22,6 +23,7 @@ const scene = new THREE.Scene()
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
+const flagTexture = textureLoader.load('./textures/one-piece-mugiwara-flag-logo-08F872AFB6-seeklogo.com.png')
 
 /**
  * Test mesh
@@ -43,11 +45,36 @@ console.log(geometry)
 //raw shader material 
 const material = new THREE.RawShaderMaterial({
     vertexShader: testVertexShader,
-    fragmentShader: testFragmentShader
+    fragmentShader: testFragmentShader,
+    uniforms:
+    {
+        uFrequency: 
+        {
+            value: new THREE.Vector2(5 , 5),
+            
+        },
+        uTime: 
+        { 
+            value: 0 
+        },
+        uColor: {
+            value: new THREE.Color('orange')
+        },
+        uTexture:
+        {
+            value: flagTexture
+        }
+    }
 })
+
+gui.add(material.uniforms.uFrequency.value, 'x').min(0).max(20).step(0.01).name('frequencyx')
+gui.add(material.uniforms.uFrequency.value, 'y').min(0).max(20).step(0.01).name('frequencyy')
+
+
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material)
+mesh.scale.y = 2/3
 scene.add(mesh)
 
 
@@ -104,6 +131,10 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+
+    //update materials 
+    //material.uniforms.uTime.value = elapsedTime
+    material.uniforms.uTime.value = elapsedTime
 
     // Update controls
     controls.update()
