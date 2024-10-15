@@ -23,7 +23,7 @@ const scene = new THREE.Scene()
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
-const flagTexture = textureLoader.load('./textures/one-piece-mugiwara-flag-logo-08F872AFB6-seeklogo.com.png')
+const flagTexture = textureLoader.load('./textures/The_Finals_logo_(current).jpg')
 
 /**
  * Test mesh
@@ -50,7 +50,7 @@ const material = new THREE.RawShaderMaterial({
     {
         uFrequency: 
         {
-            value: new THREE.Vector2(5 , 5),
+            value: new THREE.Vector2(5 , 2),
             
         },
         uTime: 
